@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // connect to the server
         new connectTask().execute("");
 
+
         Button btnNextScreen = (Button) findViewById(R.id.btnNextScreen);
 
         //Listening to button event
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
-                String message = "001,00000,000,000,000,000,000,00";
+                String message = "001,00000,000,000,000,000,001,00";
                 check_mode = 1;
                 //String message = "roll : " + s_roll + " check sum roll : " + String.valueOf(checksum_roll()) + "\n" +
                 //                    "pitch : " + s_pitch + " check sum pitch : " + String.valueOf(checksum_pitch());

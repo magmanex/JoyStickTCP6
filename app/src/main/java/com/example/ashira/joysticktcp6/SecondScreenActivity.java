@@ -186,18 +186,15 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
             @Override
             public void onClick(View view) {
 
-                String message = "X : " + String.valueOf(x_joy) + " Y : " + String.valueOf(y_joy);
+                checksum();
+                s_sum = convert_zero3(check_sum);
+                String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
 
+                //String message = "roll : " + s_roll + " check sum roll : " + String.valueOf(checksum_roll()) + "\n" +
+                //                    "pitch : " + s_pitch + " check sum pitch : " + String.valueOf(checksum_pitch());
                 //add the text in the arrayList
                 TCP.arrayList.add("c: " + message);
-
-                //sends the message to the server
-                TCP.mTcpClient.sendMessage(message);
-
-
-                //refresh the list
-                TCP.mAdapter.notifyDataSetChanged();
-                editText.setText("");
+                send_messege(message);
             }
         });
 
@@ -452,7 +449,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                 } else {
                     State_power = false;
                     textView_state.setText("State : Take off");
-                    TCP.check_mode = 0;
+                    TCP.check_mode = 1;
                     s_mode = convert_zero3(TCP.check_mode);
                     checksum();
                     s_sum = convert_zero3(check_sum);
@@ -464,7 +461,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                     TCP.arrayList.add("c: " + message);
                     send_messege(message);
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
