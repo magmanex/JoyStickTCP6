@@ -37,7 +37,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
     //Part from Joystickv4
 
     //Integer for messenger
-    int check_high=100;
+    int check_high=750;
     int x_joy;
     int y_joy;
     int check_yaw=100;
@@ -392,7 +392,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         progress_value = progress;
-                        check_high = progress_value*100;
+                        check_high = progress_value;
                         s_high = convert_zero5(check_high);
                         text_view.setText("Covered : " + progress + " / " +seek_bar.getMax());
 
