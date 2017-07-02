@@ -11,18 +11,21 @@ import android.widget.EditText;
 import android.content.Context;
 import android.widget.ListView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    TCPClient TCP;
     //Part from TCP
     public static int check_mode=0;
     public static ListView mList;
     public static ArrayList<String> arrayList;
     public static MyCustomAdapter mAdapter;
     public static TCPClient mTcpClient;
-    public static final int TCP_PORT = 8080;
-    public static final String ip = "192.168.0.102";
+    public static String SERVERIP = "192.168.0.102";
 
 
     @Override
@@ -30,8 +33,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        Button buttonconnect = (Button)findViewById(R.id.buttonCon);
+        Button buttonnext = (Button)findViewById(R.id.buttonNext);
         final Context context = this;
+
+        buttonnext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent nextScreen =  new Intent(context , SecondScreenActivity.class);
+
+                // starting new activity
+                startActivity(nextScreen);
+
+            }
+        });
+
+
 
         final EditText editText = (EditText) findViewById(R.id.editText);
         editText.setVisibility(View.INVISIBLE);
@@ -39,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         Button send = (Button)findViewById(R.id.send_button);
         send.setVisibility(View.INVISIBLE);
+
+        final EditText edittext = (EditText)findViewById(R.id.editText2);
 
 
         //relate the listView from java to the one created in xml
@@ -49,19 +69,30 @@ public class MainActivity extends AppCompatActivity {
         mList.setVisibility(View.INVISIBLE);
 
 
+        buttonconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SERVERIP = edittext.getText().toString();
+                TCP.SERVERIP = SERVERIP;
+                //Part from tcp client
+                arrayList = new ArrayList<String>();
+
+
+
+
+                mAdapter = new MyCustomAdapter(context, arrayList);
+                mList.setAdapter(mAdapter);
+
+
+                // connect to the server
+                new connectTask().execute("");
+            }
+        });
 
         //Beginning frome tcp client
-        //Part from tcp client
-        arrayList = new ArrayList<String>();
 
 
 
-
-        mAdapter = new MyCustomAdapter(this, arrayList);
-        mList.setAdapter(mAdapter);
-
-        // connect to the server
-        new connectTask().execute("");
 
 
         Button btnNextScreen = (Button) findViewById(R.id.btnNextScreen);
@@ -71,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View arg0) {
                 //Starting a new Intent
+
                 String message = "001,00000,000,000,000,000,001,00";
                 check_mode = 1;
                 //String message = "roll : " + s_roll + " check sum roll : " + String.valueOf(checksum_roll()) + "\n" +

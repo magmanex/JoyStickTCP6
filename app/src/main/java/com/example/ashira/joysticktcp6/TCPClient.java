@@ -10,11 +10,13 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class TCPClient {
+
     private String serverMessage;
-    public static final String SERVERIP = "192.168.0.110"; //your computer IP address
+    public static String SERVERIP; //your computer IP address
     public static final int SERVERPORT = 10000;
     private OnMessageReceived mMessageListener = null;
     private boolean mRun = false;
+    public static Socket socket;
 
     PrintWriter out;
     BufferedReader in;
@@ -26,14 +28,25 @@ public class TCPClient {
         mMessageListener = listener;
     }
 
+
+
     /**
      * Sends the message entered by client to the server
      * @param message text entered by client
      */
     public void sendMessage(String message){
-        if (out != null && !out.checkError()) {
-            out.println(message);
-            out.flush();
+        while (true)
+        {
+            if (out != null && !out.checkError()) {
+                out.println(message);
+                out.flush();
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            break;
         }
     }
 
@@ -52,7 +65,7 @@ public class TCPClient {
             Log.e("TCP Client", "C: Connecting...");
 
             //create a socket to make the connection with the server
-            Socket socket = new Socket(serverAddr, SERVERPORT);
+            socket = new Socket(serverAddr, SERVERPORT);
 
             try {
 

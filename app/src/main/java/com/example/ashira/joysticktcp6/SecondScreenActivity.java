@@ -17,12 +17,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.content.Context;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -37,9 +40,9 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
     //Part from Joystickv4
 
     //Integer for messenger
-    int check_high=750;
-    int x_joy;
-    int y_joy;
+    int check_high=1000;
+    int x_joy=100;
+    int y_joy=100;
     int check_yaw=100;
     int check_angle=0;
     int check_sum=0;
@@ -108,12 +111,22 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
         setContentView(R.layout.screen2);
 
 
+        RadioButton rad_frame = (RadioButton)findViewById(R.id.frame);
+        RadioButton rad_earth = (RadioButton)findViewById(R.id.earth);
+        RadioButton rad_con = (RadioButton)findViewById(R.id.control);
+
+        rad_frame.setOnClickListener(myOptionOnClickListener);
+        rad_earth.setOnClickListener(myOptionOnClickListener);
+        rad_con.setOnClickListener(myOptionOnClickListener);
+
+
 
 
         //Beginning frome Joystickv4
         //Part from joystickv4
         // our compass image
         image = (ImageView) findViewById(R.id.imageViewCompass);
+        image.setVisibility(View.INVISIBLE);
 
         // TextView Compass Detail
         tvHeading = (TextView) findViewById(R.id.tvCompass);
@@ -204,7 +217,35 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
         x_joy = js.getX();
         y_joy = js.getY();
         //mTcpClient.send("X : " + String.valueOf(x_joy) + " Y : " + String.valueOf(y_joy),ip,TCP_PORT);
+/*
+        String message = "001,00000,000,000,000,000,001,00";
+        TCP.arrayList.add("c: " + message);
+        send_messege(message);*/
+        /*while (true)
+        {
+            checksum();
+            s_sum = convert_zero3(check_sum);
+            String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
+
+            TCP.arrayList.add("c: " + message);
+            send_messege(message);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }*/
     }
+
+
+    RadioButton.OnClickListener myOptionOnClickListener = new RadioButton.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (rad_frame.isChecked()) TCP.check_mode = 7;
+            else if(rad_earth.isChecked()) TCP.check_mode = 11;
+            else TCP.check_mode = 15;
+        }
+    };
 
 
 
@@ -275,8 +316,8 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                     textView2.setText("Y : " + String.valueOf(js.getY()));
                     y_joy = js.getY();
                     y_joy += 100;
-                    if (x_joy < 0 ) y_joy= 0;
-                    if (x_joy > 200 ) y_joy = 200;
+                    if (y_joy < 0 ) y_joy= 0;
+                    if (y_joy > 200 ) y_joy = 200;
                     s_pitch = convert_zero3(y_joy);
                     textView3.setText("Angle : " + String.valueOf(js.getAngle()));
                     textView4.setText("Distance : " + String.valueOf(js.getDistance()));
@@ -340,6 +381,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
             @Override
             public void onClick(View v) {
                 check_yaw -= 1 ;
+                if(check_yaw < 0) check_yaw=0;
                 s_yaw = convert_zero3(check_yaw);
                 textView_Yaw.setText("Yaw : " + check_yaw);
                 checksum();
@@ -359,6 +401,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
             @Override
             public void onClick(View v) {
                 check_yaw += 1 ;
+                if(check_yaw >200) check_yaw=200;
                 s_yaw = convert_zero3(check_yaw);
                 textView_Yaw.setText("Yaw : " + check_yaw);
                 checksum();
@@ -435,14 +478,11 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                 if (isChecked) {
                     State_power = true;
                     textView_state.setText("State : Landing");
-                    TCP.check_mode = 3;
+                    TCP.check_mode = 7;
                     s_mode = convert_zero3(TCP.check_mode);
                     checksum();
                     s_sum = convert_zero3(check_sum);
                     String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
-
-                    //String message = "roll : " + s_roll + " check sum roll : " + String.valueOf(checksum_roll()) + "\n" +
-                    //                    "pitch : " + s_pitch + " check sum pitch : " + String.valueOf(checksum_pitch());
                     //add the text in the arrayList
                     TCP.arrayList.add("c: " + message);
                     send_messege(message);
@@ -454,14 +494,17 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                     checksum();
                     s_sum = convert_zero3(check_sum);
                     String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
-
-                    //String message = "roll : " + s_roll + " check sum roll : " + String.valueOf(checksum_roll()) + "\n" +
-                    //                    "pitch : " + s_pitch + " check sum pitch : " + String.valueOf(checksum_pitch());
                     //add the text in the arrayList
                     TCP.arrayList.add("c: " + message);
                     send_messege(message);
+                    /*
                     try {
-                        Thread.sleep(3000);
+                        TCP.mTcpClient.socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                    try {
+                        Thread.sleep(1500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -517,6 +560,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
         float degree = Math.round(event.values[0]) ;
         check_angle = Math.round(degree);
         s_angle = convert_zero3(check_angle);
+
 
 
         tvHeading.setText("Heading: " + Float.toString(degree) + " degrees" + "\n" );

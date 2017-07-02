@@ -89,6 +89,36 @@
 
     </LinearLayout>
 
+    <RadioGroup
+        android:id="@+id/radioMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewCompass"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="26dp"
+        app:layout_constraintLeft_toRightOf="@+id/layout_joystick">
+
+        <RadioButton
+            android:id="@+id/frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="frame"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/earth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="earth" />
+        <RadioButton
+            android:id="@+id/control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="control" />
+
+    </RadioGroup>
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -112,12 +142,12 @@
         android:layout_height="81dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/image_button_bg"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="44dp"
         app:layout_constraintRight_toLeftOf="@+id/imageViewCompass"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="61dp"
+        android:layout_marginEnd="51dp"
         tools:layout_constraintLeft_creator="1"
         android:layout_marginBottom="16dp"
         app:layout_constraintLeft_toLeftOf="parent"></RelativeLayout>
@@ -135,29 +165,30 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView >
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintVertical_bias="0.0"></ImageView >
     <SeekBar
-        android:layout_width="141dp"
+        android:layout_width="0dp"
         android:layout_height="104dp"
         android:id="@+id/seekBar"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="28dp"
         android:rotation="270"
-        android:max="10000"
-        android:progress="750"
+        android:max="1500"
+        android:progress="1000"
         android:scaleWidth="100%"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
-        android:layout_marginStart="33dp"
+        android:layout_marginStart="37dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="56dp"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/imageViewCompass"
-        app:layout_constraintHorizontal_bias="0.568"
-        tools:layout_editor_absoluteY="9dp" />
+        app:layout_constraintHorizontal_bias="0.568" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -217,18 +248,33 @@
     <!-- From TCP client -->
 
     <ListView android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:transcriptMode="alwaysScroll"
         android:cacheColorHint="#00000000"
-        android:listSelector="@android:color/transparent"/>
+        android:listSelector="@android:color/transparent"
+        app:layout_constraintRight_toLeftOf="parent"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout android:id="@+id/footer"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintRight_toRightOf="@+id/linearLayout"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/list">
 
         <EditText android:inputType="textMultiLine|textNoSuggestions"
             android:layout_width="0dp"
