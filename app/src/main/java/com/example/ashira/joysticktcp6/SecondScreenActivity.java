@@ -111,13 +111,53 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
         setContentView(R.layout.screen2);
 
 
-        RadioButton rad_frame = (RadioButton)findViewById(R.id.frame);
-        RadioButton rad_earth = (RadioButton)findViewById(R.id.earth);
+        final RadioButton rad_frame = (RadioButton)findViewById(R.id.frame);
+        final RadioButton rad_earth = (RadioButton)findViewById(R.id.earth);
         RadioButton rad_con = (RadioButton)findViewById(R.id.control);
+
+        RadioButton.OnClickListener myOptionOnClickListener = new RadioButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rad_frame.isChecked()) {
+                    TCP.check_mode = 7;
+                    s_mode = convert_zero3(TCP.check_mode);
+                    checksum();
+                    s_sum = convert_zero3(check_sum);
+                    String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
+
+                    //add the text in the arrayList
+                    TCP.arrayList.add("c: " + message);
+                    send_messege(message);
+                }
+                else if(rad_earth.isChecked()){
+                    TCP.check_mode = 11;
+                    s_mode = convert_zero3(TCP.check_mode);
+                    checksum();
+                    s_sum = convert_zero3(check_sum);
+                    String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
+
+                    //add the text in the arrayList
+                    TCP.arrayList.add("c: " + message);
+                    send_messege(message);
+                }
+                else {
+                    TCP.check_mode = 15;
+                    s_mode = convert_zero3(TCP.check_mode);
+                    checksum();
+                    s_sum = convert_zero3(check_sum);
+                    String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
+
+                    //add the text in the arrayList
+                    TCP.arrayList.add("c: " + message);
+                    send_messege(message);
+                }
+            }
+        };
 
         rad_frame.setOnClickListener(myOptionOnClickListener);
         rad_earth.setOnClickListener(myOptionOnClickListener);
         rad_con.setOnClickListener(myOptionOnClickListener);
+
 
 
 
@@ -238,14 +278,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
     }
 
 
-    RadioButton.OnClickListener myOptionOnClickListener = new RadioButton.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (rad_frame.isChecked()) TCP.check_mode = 7;
-            else if(rad_earth.isChecked()) TCP.check_mode = 11;
-            else TCP.check_mode = 15;
-        }
-    };
+
 
 
 
@@ -388,8 +421,6 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                 s_sum = convert_zero3(check_sum);
                 String message = String.valueOf(s_mode) + "," + String.valueOf(s_high) + "," + String.valueOf(s_roll) + "," + String.valueOf(s_pitch) + "," + String.valueOf(s_yaw) + "," + String.valueOf(s_angle) + ","  + String.valueOf(s_sum) + ",00";
 
-                //String message = "roll : " + s_roll + " check sum roll : " + String.valueOf(checksum_roll()) + "\n" +
-                //                    "pitch : " + s_pitch + " check sum pitch : " + String.valueOf(checksum_pitch());
                 //add the text in the arrayList
                 TCP.arrayList.add("c: " + message);
                 send_messege(message);
@@ -478,7 +509,7 @@ public class SecondScreenActivity extends AppCompatActivity implements SensorEve
                 if (isChecked) {
                     State_power = true;
                     textView_state.setText("State : Landing");
-                    TCP.check_mode = 7;
+                    TCP.check_mode = 3;
                     s_mode = convert_zero3(TCP.check_mode);
                     checksum();
                     s_sum = convert_zero3(check_sum);
